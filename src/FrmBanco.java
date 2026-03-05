@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -47,30 +46,24 @@ public class FrmBanco extends JFrame {
         JButton btnAgregarCuenta = new JButton();
         btnAgregarCuenta.setIcon(new ImageIcon(getClass().getResource("/iconos/AgregarCuenta.png")));
         btnAgregarCuenta.setToolTipText("Agregar Cuenta");
-        btnAgregarCuenta.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnAgregarCuentaClick();
-            }
+        btnAgregarCuenta.addActionListener(e -> {
+            btnAgregarCuentaClick();
         });
         tbBanco.add(btnAgregarCuenta);
 
         JButton btnQuitarCuenta = new JButton();
         btnQuitarCuenta.setIcon(new ImageIcon(getClass().getResource("/iconos/QuitarCuenta.png")));
         btnQuitarCuenta.setToolTipText("Quitar Cuenta");
-        btnQuitarCuenta.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnQuitarCuentaClick();
-            }
+        btnQuitarCuenta.addActionListener(e -> {
+            btnQuitarCuentaClick();
         });
         tbBanco.add(btnQuitarCuenta);
 
         JButton btnTransaccion = new JButton();
         btnTransaccion.setIcon(new ImageIcon(getClass().getResource("/iconos/Transaccion.png")));
         btnTransaccion.setToolTipText("Realizar Transacción");
-        btnTransaccion.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnTransaccionClick();
-            }
+        btnTransaccion.addActionListener(e -> {
+            btnTransaccionClick();
         });
         tbBanco.add(btnTransaccion);
 
@@ -232,8 +225,8 @@ public class FrmBanco extends JFrame {
         tp.addTab("Cuentas", spCuentas);
         tp.addTab("Transacciones", spTransacciones);
 
-        getContentPane().add(tbBanco, BorderLayout.NORTH);
-        getContentPane().add(tp, BorderLayout.CENTER);
+        add(tbBanco, BorderLayout.NORTH);
+        add(tp, BorderLayout.CENTER);
     }
 
     private void btnAgregarCuentaClick() {
