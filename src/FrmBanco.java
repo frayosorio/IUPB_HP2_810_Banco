@@ -1,6 +1,4 @@
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -21,10 +19,11 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import servicios.CuentaServicio;
+
 public class FrmBanco extends JFrame {
 
-    public String[] encabezadosCuentas = new String[] { "Tipo", "Número", "Titular", "Saldo",
-            "Sobregiro o Límite" };
+   
     public String[] encabezadosTransacciones = new String[] { "Cuenta", "Tipo", "Valor", "Saldo" };
     private String[] opcionesTransaccion = new String[] { "Depósito", "Retiro" };
 
@@ -139,8 +138,7 @@ public class FrmBanco extends JFrame {
         tblCuentas = new JTable();
         JScrollPane spListaCuentas = new JScrollPane(tblCuentas);
 
-        DefaultTableModel dtm = new DefaultTableModel(null, encabezadosCuentas);
-        tblCuentas.setModel(dtm);
+        CuentaServicio.mostrar(tblCuentas);
 
         // Agregar componentes
         pnlCuentas.add(pnlEditarCuenta);
@@ -210,7 +208,7 @@ public class FrmBanco extends JFrame {
         tblTransacciones = new JTable();
         JScrollPane spListaTransacciones = new JScrollPane(tblTransacciones);
 
-        dtm = new DefaultTableModel(null, encabezadosTransacciones);
+        DefaultTableModel dtm = new DefaultTableModel(null, encabezadosTransacciones);
         tblTransacciones.setModel(dtm);
 
         // Agregar componentes

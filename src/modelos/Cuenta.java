@@ -1,3 +1,5 @@
+package modelos;
+
 public abstract class Cuenta {
     private String titular;
     private double saldo;
@@ -31,5 +33,7 @@ public abstract class Cuenta {
         if (cantidad >= 0)
             saldo += cantidad;
     }
+
+    public abstract String[] getDatos();
 
 }
