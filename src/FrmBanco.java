@@ -19,18 +19,19 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import modelos.TipoCuenta;
 import servicios.CuentaServicio;
 
 public class FrmBanco extends JFrame {
 
-   
     public String[] encabezadosTransacciones = new String[] { "Cuenta", "Tipo", "Valor", "Saldo" };
     private String[] opcionesTransaccion = new String[] { "Depósito", "Retiro" };
 
     private JTable tblCuentas, tblTransacciones;
     private JPanel pnlEditarCuenta, pnlEditarTransaccion;
 
-    private JTextField txtNumero, txtTitular, txtSaldoInicial, txtLimite, txtValor;
+    private JLabel lblValor, lblTasa, lblPlazo;
+    private JTextField txtNumero, txtTitular, txtValor, txtTasa, txtPlazo, txtValorTransaccion;
     private JComboBox cmbTipoCuenta, cmbTipoTransaccion, cmbCuenta;
 
     JTabbedPane tp;
@@ -91,28 +92,72 @@ public class FrmBanco extends JFrame {
         txtTitular.setBounds(110, 40, 100, 25);
         pnlEditarCuenta.add(txtTitular);
 
-        JLabel lblSaldoInicial = new JLabel("Saldo Inicial");
-        lblSaldoInicial.setBounds(10, 70, 100, 25);
-        pnlEditarCuenta.add(lblSaldoInicial);
+        lblTasa = new JLabel("Tasa Interés");
+        lblTasa.setBounds(10, 70, 100, 25);
+        pnlEditarCuenta.add(lblTasa);
 
-        txtSaldoInicial = new JTextField();
-        txtSaldoInicial.setBounds(110, 70, 100, 25);
-        pnlEditarCuenta.add(txtSaldoInicial);
+        txtTasa = new JTextField();
+        txtTasa.setBounds(110, 70, 100, 25);
+        pnlEditarCuenta.add(txtTasa);
 
         cmbTipoCuenta = new JComboBox();
         cmbTipoCuenta.setBounds(220, 10, 100, 25);
-        String[] opciones = new String[] { "Ahorros", "Corriente", "Crédito" };
-        DefaultComboBoxModel mdlTipoCuenta = new DefaultComboBoxModel(opciones);
+
+        DefaultComboBoxModel mdlTipoCuenta = new DefaultComboBoxModel(TipoCuenta.values());
         cmbTipoCuenta.setModel(mdlTipoCuenta);
         pnlEditarCuenta.add(cmbTipoCuenta);
 
-        JLabel lblLimite = new JLabel("Sobregiro o Límite Crédito");
-        lblLimite.setBounds(220, 40, 100, 25);
-        pnlEditarCuenta.add(lblLimite);
+        cmbTipoCuenta.addActionListener(e -> {
+            switch ((TipoCuenta) cmbTipoCuenta.getSelectedItem()) {
+                case AHORROS:
+                    lblValor.setVisible(false);
+                    txtValor.setVisible(false);
+                    lblTasa.setVisible(true);
+                    txtTasa.setVisible(true);
+                    lblPlazo.setVisible(false);
+                    txtPlazo.setVisible(false);
+                    break;
+                case CORRIENTE:
+                    lblValor.setVisible(true);
+                    lblValor.setText("Sobregiro:");
+                    txtValor.setVisible(true);
+                    lblTasa.setVisible(false);
+                    txtTasa.setVisible(false);
+                    lblPlazo.setVisible(false);
+                    txtPlazo.setVisible(false);
+                    break;
 
-        txtLimite = new JTextField();
-        txtLimite.setBounds(320, 40, 100, 25);
-        pnlEditarCuenta.add(txtLimite);
+                case CREDITO:
+                    lblValor.setVisible(true);
+                    lblValor.setText("Valor Prestado:");
+                    txtValor.setVisible(true);
+                    lblTasa.setVisible(true);
+                    txtTasa.setVisible(true);
+                    lblPlazo.setVisible(true);
+                    txtPlazo.setVisible(true);
+                    break;
+            }
+        });
+
+        lblValor = new JLabel("");
+        lblValor.setBounds(220, 40, 100, 25);
+        lblValor.setVisible(false);
+        pnlEditarCuenta.add(lblValor);
+
+        txtValor = new JTextField();
+        txtValor.setBounds(320, 40, 100, 25);
+        txtValor.setVisible(false);
+        pnlEditarCuenta.add(txtValor);
+
+        lblPlazo = new JLabel("Plazo:");
+        lblPlazo.setBounds(430, 40, 100, 25);
+        lblPlazo.setVisible(false);
+        pnlEditarCuenta.add(lblPlazo);
+
+        txtPlazo = new JTextField();
+        txtPlazo.setBounds(490, 40, 100, 25);
+        txtPlazo.setVisible(false);
+        pnlEditarCuenta.add(txtPlazo);
 
         JButton btnGuardarCuenta = new JButton("Guardar");
         btnGuardarCuenta.setBounds(220, 70, 100, 25);
@@ -176,13 +221,13 @@ public class FrmBanco extends JFrame {
         cmbTipoTransaccion.setModel(mdlTipoTransaccion);
         pnlEditarTransaccion.add(cmbTipoTransaccion);
 
-        JLabel lblValor = new JLabel("Valor");
-        lblValor.setBounds(10, 70, 100, 25);
-        pnlEditarTransaccion.add(lblValor);
+        JLabel lblValorTransaccion = new JLabel("Valor Transacción:");
+        lblValorTransaccion.setBounds(10, 70, 100, 25);
+        pnlEditarTransaccion.add(lblValorTransaccion);
 
-        txtValor = new JTextField();
-        txtValor.setBounds(110, 70, 100, 25);
-        pnlEditarTransaccion.add(txtValor);
+        txtValorTransaccion = new JTextField();
+        txtValorTransaccion.setBounds(110, 70, 100, 25);
+        pnlEditarTransaccion.add(txtValorTransaccion);
 
         JButton btnGuardarTransaccion = new JButton("Guardar");
         btnGuardarTransaccion.setBounds(220, 70, 100, 25);
@@ -239,6 +284,18 @@ public class FrmBanco extends JFrame {
 
     private void btnGuardarCuentaClick() {
         pnlEditarCuenta.setVisible(false);
+        TipoCuenta tipoCuenta = (TipoCuenta) cmbTipoCuenta.getSelectedItem();
+        CuentaServicio.agregar(tipoCuenta,
+                txtTitular.getText(), txtNumero.getText(),
+                tipoCuenta == TipoCuenta.CORRIENTE ? Double.parseDouble(txtValor.getText()) : 0,
+                tipoCuenta == TipoCuenta.AHORROS || tipoCuenta == TipoCuenta.CREDITO
+                        ? Double.parseDouble(txtTasa.getText())
+                        : 0,
+                tipoCuenta == TipoCuenta.CREDITO ? Double.parseDouble(txtValor.getText()) : 0,
+                tipoCuenta == TipoCuenta.CREDITO ? Integer.parseInt(txtPlazo.getText()) : 0
+
+        );
+        CuentaServicio.mostrar(tblCuentas);
 
     }
 

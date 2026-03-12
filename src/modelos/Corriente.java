@@ -32,6 +32,7 @@ public class Corriente extends Cuenta {
                 getNumero(),
                 getTitular(),
                 df.format(getSaldo()),
+                "Sobregiro:"+df.format(sobregiro),
         };
     }
 }

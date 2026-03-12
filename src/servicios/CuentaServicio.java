@@ -15,7 +15,7 @@ import modelos.TipoCuenta;
 public class CuentaServicio {
 
     private static String[] encabezados = new String[] { "Tipo", "Número", "Titular", "Saldo",
-            "Sobregiro o Límite" };
+            "Descripción" };
     private static List<Cuenta> cuentas = new ArrayList<>();
 
     public static String[] getEncabezados() {
@@ -58,7 +58,7 @@ public class CuentaServicio {
             case CREDITO:
                 cuenta = new Credito(titular, numero, valorPrestado, tasaInteres, plazo);
         }
-
+        cuentas.add(cuenta);
         return cuenta;
     }
 

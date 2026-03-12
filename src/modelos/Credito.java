@@ -64,6 +64,9 @@ public class Credito extends Cuenta {
                 getNumero(),
                 getTitular(),
                 df.format(getSaldo()),
+                "Valor: $"+df.format(valorPrestado)+
+                " plazo:"+plazo+
+                " tasa:"+df.format(tasaInteres)+"%",
         };
     }
 

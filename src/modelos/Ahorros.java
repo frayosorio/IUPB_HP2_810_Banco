@@ -36,6 +36,7 @@ public class Ahorros extends Cuenta {
                 getNumero(),
                 getTitular(),
                 df.format(getSaldo()),
+                "tasa:"+df.format(tasaInteres),
         };
     }
 
